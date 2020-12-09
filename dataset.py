@@ -1,15 +1,4 @@
 # -*- coding: utf-8 -*-
-'''
-@Time          : 2020/05/06 21:09
-@Author        : Tianxiaomo
-@File          : dataset.py
-@Noice         :
-@Modificattion :
-    @Author    :
-    @Time      :
-    @Detail    :
-
-'''
 from torch.utils.data.dataset import Dataset
 
 import random
@@ -288,7 +277,9 @@ class Yolo_dataset(Dataset):
                 img_path = random.choice(list(self.truth.keys()))
                 bboxes = np.array(self.truth.get(img_path), dtype=np.float)
                 img_path = os.path.join(self.cfg.dataset_dir, img_path)
+            #print(img_path)
             img = cv2.imread(img_path)
+            #print(img)
             if img is None:
                 continue
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
