@@ -334,7 +334,7 @@ def plot_boxes_cv2(img, boxes, savename=None, class_names=None, color=None):
 
 def plot_boxes(img, boxes, savename=None, class_names=None):
     colors = torch.FloatTensor([[1, 0, 1], [0, 0, 1], [0, 1, 1], [0, 1, 0], [1, 1, 0], [1, 0, 0]]);
-
+    
     def get_color(c, x, max_val):
         ratio = float(x) / max_val * 5
         i = int(math.floor(ratio))
@@ -346,6 +346,8 @@ def plot_boxes(img, boxes, savename=None, class_names=None):
     width = img.width
     height = img.height
     draw = ImageDraw.Draw(img)
+    cls_confs = []
+
     for i in range(len(boxes)):
         box = boxes[i]
         x1 = (box[0] - box[2] / 2.0) * width
@@ -358,6 +360,7 @@ def plot_boxes(img, boxes, savename=None, class_names=None):
             cls_conf = box[5]
             cls_id = box[6]
             print('%s: %f' % (class_names[cls_id], cls_conf))
+            cls_confs.append({class_names[cls_id]: cls_conf})
             classes = len(class_names)
             offset = cls_id * 123457 % classes
             red = get_color(2, offset, classes)
@@ -369,7 +372,7 @@ def plot_boxes(img, boxes, savename=None, class_names=None):
     if savename:
         print("save plot results to %s" % savename)
         img.save(savename)
-    return img
+    return img, cls_confs
 
 
 def read_truths(lab_path):
